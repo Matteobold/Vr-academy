@@ -2,37 +2,34 @@
 <html lang="it" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a0a">
     <title>VR ACADEMY | AI x XR Manifesto & Training</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts: Space Grotesk -->
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700;900&display=swap" rel="stylesheet">
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        brutal: ['"Space Grotesk"', 'sans-serif'],
-                    },
+                    fontFamily: { brutal: ['"Space Grotesk"', 'sans-serif'] },
                     colors: {
                         brutal: {
                             bg: '#e2e2e2',
                             black: '#0a0a0a',
-                            neon: '#ccff00', // Verde acido
-                            pink: '#ff00ff', // Magenta puro
-                            blue: '#0000ff', // Blu elettrico
-                            orange: '#ff5500' // Arancio AI
+                            neon: '#ccff00',
+                            pink: '#ff00ff',
+                            blue: '#0000ff',
+                            orange: '#ff5500'
                         }
                     },
                     boxShadow: {
-                        'brutal': '8px 8px 0px 0px rgba(10,10,10,1)',
+                        'brutal': '6px 6px 0px 0px rgba(10,10,10,1)',
+                        'brutal-sm': '4px 4px 0px 0px rgba(10,10,10,1)',
                         'brutal-hover': '2px 2px 0px 0px rgba(10,10,10,1)',
-                        'brutal-neon': '8px 8px 0px 0px #ccff00',
-                        'brutal-orange': '8px 8px 0px 0px #ff5500',
+                        'brutal-neon': '6px 6px 0px 0px #ccff00',
+                        'brutal-orange': '6px 6px 0px 0px #ff5500',
                     }
                 }
             }
@@ -40,126 +37,247 @@
     </script>
 
     <style>
+        * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+
         body {
             font-family: 'Space Grotesk', sans-serif;
             background-color: #e2e2e2;
             color: #0a0a0a;
             overflow-x: hidden;
             background-image: linear-gradient(#d1d1d1 1px, transparent 1px), linear-gradient(90deg, #d1d1d1 1px, transparent 1px);
-            background-size: 40px 40px;
+            background-size: 30px 30px;
+        }
+
+        @media (min-width: 768px) {
+            body { background-size: 40px 40px; }
         }
 
         ::selection { background-color: #ff5500; color: #fff; }
 
-        ::-webkit-scrollbar { width: 12px; border-left: 2px solid #0a0a0a; }
+        ::-webkit-scrollbar { width: 8px; border-left: 2px solid #0a0a0a; }
         ::-webkit-scrollbar-track { background: #e2e2e2; }
         ::-webkit-scrollbar-thumb { background: #0a0a0a; }
 
         .brutal-border { border: 3px solid #0a0a0a; }
 
+        /* ── MARQUEE ── */
         .marquee-container {
             overflow: hidden;
             white-space: nowrap;
             border-top: 3px solid #0a0a0a;
             border-bottom: 3px solid #0a0a0a;
             background: #ccff00;
-            padding: 10px 0;
+            padding: 8px 0;
             display: flex;
         }
         .marquee-content {
             display: inline-block;
-            animation: marquee 20s linear infinite;
+            animation: marquee 18s linear infinite;
             font-weight: 900;
             text-transform: uppercase;
-            font-size: 1.5rem;
+            font-size: clamp(0.85rem, 3vw, 1.5rem);
+            letter-spacing: 0.02em;
         }
         @keyframes marquee {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
 
+        /* ── NAV ── */
+        nav {
+            /* Safe area for notched phones */
+            padding-left: max(1rem, env(safe-area-inset-left));
+            padding-right: max(1rem, env(safe-area-inset-right));
+        }
+
+        /* ── GLITCH ── */
         .glitch-hover:hover {
             animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
             background-color: #0a0a0a;
             color: #ff5500;
         }
         @keyframes glitch-skew {
-            0% { transform: skew(0deg); }
-            20% { transform: skew(-20deg); }
-            40% { transform: skew(20deg); }
-            60% { transform: skew(-10deg); }
-            80% { transform: skew(10deg); }
+            0%   { transform: skew(0deg); }
+            20%  { transform: skew(-20deg); }
+            40%  { transform: skew(20deg); }
+            60%  { transform: skew(-10deg); }
+            80%  { transform: skew(10deg); }
             100% { transform: skew(0deg); }
         }
 
-        .role-card { transition: all 0.2s ease-in-out; }
-        .role-card:hover {
-            transform: translate(6px, 6px);
-            box-shadow: 2px 2px 0px 0px rgba(10,10,10,1);
+        /* ── CARDS ── */
+        .role-card { transition: transform 0.18s ease, box-shadow 0.18s ease; }
+        /* Only apply hover lift on non-touch devices */
+        @media (hover: hover) {
+            .role-card:hover {
+                transform: translate(5px, 5px);
+                box-shadow: 2px 2px 0px 0px rgba(10,10,10,1);
+            }
         }
-        
+        /* Touch feedback */
+        .role-card:active { transform: translate(3px, 3px); }
+
         .ascii-icon {
             font-family: monospace;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: bold;
             line-height: 1;
+        }
+
+        /* ── MOBILE NAV MENU ── */
+        #mobileMenu {
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        #mobileMenu.open {
+            max-height: 300px;
+            opacity: 1;
+        }
+
+        /* ── HERO TYPE ── */
+        .hero-title {
+            font-size: clamp(3rem, 12vw, 9rem);
+            line-height: 0.88;
+        }
+
+        /* ── TOUCH-FRIENDLY INPUTS ── */
+        input, select, button, textarea {
+            font-size: 16px !important; /* Prevents iOS zoom on focus */
+            touch-action: manipulation;
+        }
+        input, select {
+            -webkit-appearance: none;
+            appearance: none;
+            border-radius: 0;
+        }
+
+        /* ── SECTION HEADINGS ── */
+        .section-heading {
+            font-size: clamp(2.5rem, 9vw, 7rem);
+        }
+
+        /* ── FOOTER SAFE AREA ── */
+        footer {
+            padding-bottom: max(3rem, env(safe-area-inset-bottom));
+        }
+
+        /* ── SCROLL SNAP for course cards on mobile ── */
+        @media (max-width: 767px) {
+            .courses-scroll {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                gap: 1rem;
+                padding-bottom: 1rem;
+                /* Hide scrollbar but keep scroll */
+                scrollbar-width: none;
+            }
+            .courses-scroll::-webkit-scrollbar { display: none; }
+            .course-card-wrap {
+                flex: 0 0 82vw;
+                scroll-snap-align: start;
+            }
+        }
+
+        /* ── PILL BADGE ── */
+        .course-badge {
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+        }
+
+        /* Reduce motion for users who prefer it */
+        @media (prefers-reduced-motion: reduce) {
+            .marquee-content { animation: none; }
+            .glitch-hover:hover { animation: none; }
         }
     </style>
 </head>
 <body class="antialiased">
 
     <!-- Top Marquee -->
-    <div class="marquee-container">
+    <div class="marquee-container" aria-hidden="true">
         <div class="marquee-content">
-            // VR ACADEMY // AI IS THE ENGINE // XR IS THE INTERFACE // REAL-TIME PERSONALIZATION // WE BUILD THE STANDARDS // JOIN THE REVOLUTION // 
-            VR ACADEMY // AI IS THE ENGINE // XR IS THE INTERFACE // REAL-TIME PERSONALIZATION // WE BUILD THE STANDARDS // JOIN THE REVOLUTION //
+            // VR ACADEMY // AI IS THE ENGINE // XR IS THE INTERFACE // REAL-TIME PERSONALIZATION // WE BUILD THE STANDARDS // JOIN THE REVOLUTION //&nbsp;
+            VR ACADEMY // AI IS THE ENGINE // XR IS THE INTERFACE // REAL-TIME PERSONALIZATION // WE BUILD THE STANDARDS // JOIN THE REVOLUTION //&nbsp;
         </div>
     </div>
 
     <!-- Navigation -->
-    <nav class="p-6 flex justify-between items-center brutal-border border-t-0 bg-brutal-bg sticky top-0 z-50">
-        <div class="font-black text-3xl tracking-tighter uppercase glitch-hover px-2 flex items-center gap-2">
-            VR ACADEMY <span class="text-sm bg-brutal-black text-brutal-neon px-2 py-1 hidden sm:inline-block">AI x XR</span>
+    <nav class="py-4 px-4 md:px-6 brutal-border border-t-0 bg-brutal-bg sticky top-0 z-50">
+        <div class="flex justify-between items-center">
+            <!-- Logo -->
+            <div class="font-black text-xl sm:text-2xl md:text-3xl tracking-tighter uppercase glitch-hover px-2 flex items-center gap-2 cursor-default select-none">
+                VR ACADEMY
+                <span class="text-xs bg-brutal-black text-brutal-neon px-2 py-1 hidden sm:inline-block">AI x XR</span>
+            </div>
+
+            <!-- Desktop links -->
+            <div class="hidden md:flex gap-8 font-bold uppercase">
+                <a href="#vision" class="hover:bg-brutal-black hover:text-white px-2 py-1 transition-colors">Visione</a>
+                <a href="#standard" class="hover:bg-brutal-black hover:text-white px-2 py-1 transition-colors">Etica AI</a>
+                <a href="#roles" class="hover:bg-brutal-black hover:text-white px-2 py-1 transition-colors">Percorsi VR</a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <a href="#join" class="bg-brutal-black text-white px-4 py-2 md:px-6 font-bold uppercase brutal-border hover:bg-brutal-orange hover:text-brutal-black transition-colors text-sm md:text-base">
+                    ENTRA
+                </a>
+                <!-- Hamburger — mobile only -->
+                <button id="menuToggle" class="md:hidden brutal-border p-2 bg-brutal-bg active:bg-brutal-black active:text-white transition-colors" aria-label="Apri menu" aria-expanded="false" aria-controls="mobileMenu">
+                    <svg id="iconMenu" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path d="M3 6h18M3 12h18M3 18h18"/>
+                    </svg>
+                    <svg id="iconClose" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" class="hidden">
+                        <path d="M18 6 6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
         </div>
-        <div class="hidden md:flex gap-8 font-bold uppercase">
-            <a href="#vision" class="hover:bg-brutal-black hover:text-white px-2 transition-colors">Visione</a>
-            <a href="#standard" class="hover:bg-brutal-black hover:text-white px-2 transition-colors">Etica AI</a>
-            <a href="#roles" class="hover:bg-brutal-black hover:text-white px-2 transition-colors">Percorsi VR</a>
+
+        <!-- Mobile Menu Drawer -->
+        <div id="mobileMenu" role="navigation" aria-label="Menu mobile">
+            <div class="pt-4 pb-2 flex flex-col gap-1 border-t-2 border-brutal-black mt-4">
+                <a href="#vision"   onclick="closeMobileMenu()" class="font-bold uppercase px-3 py-3 hover:bg-brutal-black hover:text-white active:bg-brutal-black active:text-white transition-colors">Visione</a>
+                <a href="#standard" onclick="closeMobileMenu()" class="font-bold uppercase px-3 py-3 hover:bg-brutal-black hover:text-white active:bg-brutal-black active:text-white transition-colors">Etica AI</a>
+                <a href="#roles"    onclick="closeMobileMenu()" class="font-bold uppercase px-3 py-3 hover:bg-brutal-black hover:text-white active:bg-brutal-black active:text-white transition-colors">Percorsi VR</a>
+                <a href="#join"     onclick="closeMobileMenu()" class="font-bold uppercase px-3 py-3 bg-brutal-orange text-brutal-black mt-2 text-center brutal-border">ISCRIVITI ALLA WISHLIST →</a>
+            </div>
         </div>
-        <a href="#join" class="bg-brutal-black text-white px-6 py-2 font-bold uppercase brutal-border hover:bg-brutal-orange hover:text-brutal-black transition-colors">
-            ENTRA NELL'HUB
-        </a>
     </nav>
 
     <!-- Hero Section -->
-    <header id="vision" class="min-h-[85vh] flex flex-col justify-center px-6 md:px-12 py-20 relative">
+    <header id="vision" class="min-h-[88svh] flex flex-col justify-center px-4 sm:px-6 md:px-12 py-16 md:py-20 relative">
         <div class="max-w-7xl mx-auto w-full relative z-10">
-            <div class="inline-block bg-brutal-orange text-white font-bold uppercase px-4 py-2 brutal-border shadow-brutal mb-8 transform -rotate-2">
+            <div class="inline-block bg-brutal-orange text-white font-bold uppercase px-3 py-2 brutal-border shadow-brutal-sm mb-6 transform -rotate-2 text-sm">
                 Manifesto VR Academy 2026
             </div>
-            
-            <h1 class="text-6xl md:text-8xl lg:text-[9rem] font-black uppercase leading-[0.85] tracking-tighter mb-8 mix-blend-difference text-brutal-black">
+
+            <h1 class="hero-title font-black uppercase tracking-tighter mb-8 text-brutal-black">
                 L'Intelligenza<br>
-                <span class="bg-brutal-neon px-4 brutal-border inline-block mt-2">Spaziale.</span>
+                <span class="bg-brutal-neon px-2 sm:px-4 brutal-border inline-block mt-2">Spaziale.</span>
             </h1>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mt-12">
-                <div class="bg-white p-6 brutal-border shadow-brutal flex flex-col justify-center">
-                    <p class="text-xl md:text-2xl font-medium leading-relaxed mb-4">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 md:mt-12">
+                <div class="bg-white p-5 sm:p-6 brutal-border shadow-brutal-sm md:shadow-brutal flex flex-col justify-center">
+                    <p class="text-lg sm:text-xl md:text-2xl font-medium leading-relaxed mb-4">
                         La Realtà Virtuale statica è morta. Stiamo ingegnerizzando mondi dove l'<strong>Intelligenza Artificiale Generativa</strong> crea ambienti e avatar in tempo reale, modellandosi sui dati di chi li vive.
                     </p>
-                    <p class="text-lg font-bold text-brutal-orange uppercase">
+                    <p class="text-base sm:text-lg font-bold text-brutal-orange uppercase">
                         VR Academy forgia i pionieri di questa rivoluzione.
                     </p>
                 </div>
-                <div class="flex flex-col justify-center gap-4 bg-brutal-bg p-6 brutal-border">
-                    <p class="font-bold text-lg uppercase flex items-center gap-4">
+
+                <div class="flex flex-col justify-center gap-4 bg-brutal-bg p-5 sm:p-6 brutal-border">
+                    <p class="font-bold text-base sm:text-lg uppercase flex items-center gap-3">
                         <span class="ascii-icon text-brutal-orange">[*]</span> Formazione AI-Driven Integrata
                     </p>
-                    <p class="font-bold text-lg uppercase flex items-center gap-4">
+                    <p class="font-bold text-base sm:text-lg uppercase flex items-center gap-3">
                         <span class="ascii-icon text-brutal-blue">[*]</span> Data-Reactive Spatial Computing
                     </p>
-                    <p class="font-bold text-lg uppercase flex items-center gap-4">
+                    <p class="font-bold text-base sm:text-lg uppercase flex items-center gap-3">
                         <span class="ascii-icon text-brutal-pink">[*]</span> Immersive XR: Lavoro & Skill Building
                     </p>
                 </div>
@@ -168,151 +286,173 @@
     </header>
 
     <!-- Etica & Standard -->
-    <section id="standard" class="py-24 px-6 bg-brutal-black text-white brutal-border border-x-0">
+    <section id="standard" class="py-16 md:py-24 px-4 sm:px-6 bg-brutal-black text-white brutal-border border-x-0">
         <div class="max-w-7xl mx-auto">
-            <h2 class="text-5xl md:text-7xl font-black uppercase mb-16 text-brutal-neon">
+            <h2 class="section-heading font-black uppercase mb-10 md:mb-16 text-brutal-neon">
                 Standard & Etica.<br>Zero distopie.
             </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Standard 1 -->
-                <div class="bg-brutal-bg text-brutal-black p-8 brutal-border shadow-brutal-orange">
-                    <div class="ascii-icon mb-6 text-4xl">/01</div>
-                    <h3 class="text-2xl font-black uppercase mb-4">Personalizzazione Etica</h3>
-                    <p class="font-medium">L'IA adatta lo spazio virtuale in base ai comportamenti. Come VR Academy, stiamo scrivendo gli standard affinché questa tecnologia potenzi l'individuo, bloccando ogni forma di manipolazione algoritmica.</p>
-                </div>
-                
-                <!-- Standard 2 -->
-                <div class="bg-brutal-bg text-brutal-black p-8 brutal-border shadow-brutal-pink">
-                    <div class="ascii-icon mb-6 text-4xl">/02</div>
-                    <h3 class="text-2xl font-black uppercase mb-4">Trasparenza Biometrica</h3>
-                    <p class="font-medium">I visori leggono pupille e micro-espressioni. Il nostro protocollo formativo impone il controllo totale dell'utente sui propri dati spaziali, insegnando a sviluppare sistemi XR sicuri by design.</p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                <div class="bg-brutal-bg text-brutal-black p-6 sm:p-8 brutal-border shadow-brutal-orange">
+                    <div class="font-mono font-black mb-5 text-3xl">/01</div>
+                    <h3 class="text-xl sm:text-2xl font-black uppercase mb-4">Personalizzazione Etica</h3>
+                    <p class="font-medium text-sm sm:text-base">L'IA adatta lo spazio virtuale in base ai comportamenti. Come VR Academy, stiamo scrivendo gli standard affinché questa tecnologia potenzi l'individuo, bloccando ogni forma di manipolazione algoritmica.</p>
                 </div>
 
-                <!-- Standard 3 -->
-                <div class="bg-brutal-bg text-brutal-black p-8 brutal-border shadow-brutal-neon">
-                    <div class="ascii-icon mb-6 text-4xl">/03</div>
-                    <h3 class="text-2xl font-black uppercase mb-4">Il Metodo VR Academy</h3>
-                    <p class="font-medium">Non insegniamo solo a modellare poligoni in 3D. Insegniamo a orchestrare tool AI generativi per decuplicare la produttività, abbassando le barriere e democratizzando l'accesso alla realtà immersiva.</p>
+                <div class="bg-brutal-bg text-brutal-black p-6 sm:p-8 brutal-border shadow-brutal-pink">
+                    <div class="font-mono font-black mb-5 text-3xl">/02</div>
+                    <h3 class="text-xl sm:text-2xl font-black uppercase mb-4">Trasparenza Biometrica</h3>
+                    <p class="font-medium text-sm sm:text-base">I visori leggono pupille e micro-espressioni. Il nostro protocollo formativo impone il controllo totale dell'utente sui propri dati spaziali, insegnando a sviluppare sistemi XR sicuri by design.</p>
+                </div>
+
+                <div class="bg-brutal-bg text-brutal-black p-6 sm:p-8 brutal-border shadow-brutal-neon sm:col-span-2 lg:col-span-1">
+                    <div class="font-mono font-black mb-5 text-3xl">/03</div>
+                    <h3 class="text-xl sm:text-2xl font-black uppercase mb-4">Il Metodo VR Academy</h3>
+                    <p class="font-medium text-sm sm:text-base">Non insegniamo solo a modellare poligoni in 3D. Insegniamo a orchestrare tool AI generativi per decuplicare la produttività, abbassando le barriere e democratizzando l'accesso alla realtà immersiva.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- I Percorsi Formativi -->
-    <section id="roles" class="py-24 px-6 max-w-7xl mx-auto">
-        <div class="mb-16 flex flex-col md:flex-row justify-between items-end border-b-4 border-brutal-black pb-8">
-            <h2 class="text-5xl md:text-7xl font-black uppercase tracking-tighter max-w-2xl">
-                I Percorsi <br>VR Academy
+    <section id="roles" class="py-16 md:py-24 px-4 sm:px-6 max-w-7xl mx-auto">
+        <div class="mb-10 md:mb-16 flex flex-col md:flex-row justify-between items-end border-b-4 border-brutal-black pb-6 md:pb-8 gap-4">
+            <h2 class="section-heading font-black uppercase tracking-tighter">
+                I Percorsi<br>VR Academy
             </h2>
-            <p class="text-xl font-bold uppercase text-right mt-6 md:mt-0">
+            <p class="text-base sm:text-xl font-bold uppercase md:text-right">
                 Le carriere ibride (3D + AI)<br>del prossimo decennio.
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            <!-- Percorso 1: AI Prompt Engineer (Evoluto) -->
-            <div class="bg-brutal-black text-white p-8 brutal-border shadow-brutal-orange role-card flex flex-col h-full lg:col-span-2">
-                <div class="bg-brutal-orange text-brutal-black w-fit px-3 py-1 font-bold border-2 border-brutal-orange mb-6 uppercase text-sm">Corso Avanzato // Creazione Generativa</div>
-                <h3 class="text-4xl font-black uppercase mb-4">AI-XR Prompt Engineer</h3>
-                <p class="font-medium mb-6 text-xl">L'Intelligenza Artificiale Generativa fonde la creatività umana con la computazione. In questo percorso imparerai a usare modelli LLM e Text-to-3D per generare dinamicamente interi ambienti, materiali e comportamenti NPC all'interno della VR.</p>
-                <div class="mt-auto pt-4 font-bold text-brutal-orange border-t-2 border-gray-800">
-                    Stack: <span class="text-gray-400">Generative AI, Blender Python, Unreal PCG, Prompting Avanzato</span>
+        <!-- Mobile: horizontal scroll | Tablet+: grid -->
+        <div class="courses-scroll md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8">
+
+            <!-- Percorso 1 — full-width on desktop grid -->
+            <div class="course-card-wrap md:contents">
+                <div class="bg-brutal-black text-white p-6 sm:p-8 brutal-border shadow-brutal-orange role-card flex flex-col h-full md:col-span-2">
+                    <div class="bg-brutal-orange text-brutal-black w-fit px-3 py-1 font-bold border-2 border-brutal-orange mb-5 uppercase course-badge">Corso Avanzato // Creazione Generativa</div>
+                    <h3 class="text-2xl sm:text-4xl font-black uppercase mb-3">AI-XR Prompt Engineer</h3>
+                    <p class="font-medium mb-6 text-base sm:text-xl">L'Intelligenza Artificiale Generativa fonde la creatività umana con la computazione. In questo percorso imparerai a usare modelli LLM e Text-to-3D per generare dinamicamente interi ambienti, materiali e comportamenti NPC all'interno della VR.</p>
+                    <div class="mt-auto pt-4 font-bold text-brutal-orange border-t-2 border-gray-800 text-sm">
+                        Stack: <span class="text-gray-400">Generative AI, Blender Python, Unreal PCG, Prompting Avanzato</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Percorso 2: Spatial Data Analyst -->
-            <div class="bg-white p-8 brutal-border shadow-brutal role-card flex flex-col h-full">
-                <div class="bg-brutal-blue text-white w-fit px-3 py-1 font-bold border-2 border-brutal-black mb-6 uppercase text-sm">Corso // Dati & Comportamento</div>
-                <h3 class="text-3xl font-black uppercase mb-4">Spatial AI Data Analyst</h3>
-                <p class="font-medium mb-6 flex-grow">Impara a raccogliere e gestire le telemetrie (eye-tracking, spostamenti) per "addestrare" gli ambienti XR. L'obiettivo è far reagire la luce o la difficoltà dell'ambiente allo stato cognitivo dell'utente.</p>
-                <div class="mt-auto border-t-2 border-brutal-black pt-4 font-bold">
-                    Stack: <span class="text-gray-600">Data Science, ML, Biometria VR</span>
+            <!-- Percorso 2 -->
+            <div class="course-card-wrap md:contents">
+                <div class="bg-white p-6 sm:p-8 brutal-border shadow-brutal role-card flex flex-col h-full">
+                    <div class="bg-brutal-blue text-white w-fit px-3 py-1 font-bold border-2 border-brutal-black mb-5 uppercase course-badge">Corso // Dati & Comportamento</div>
+                    <h3 class="text-2xl sm:text-3xl font-black uppercase mb-3">Spatial AI Data Analyst</h3>
+                    <p class="font-medium mb-6 flex-grow text-sm sm:text-base">Impara a raccogliere e gestire le telemetrie (eye-tracking, spostamenti) per "addestrare" gli ambienti XR. L'obiettivo è far reagire la luce o la difficoltà dell'ambiente allo stato cognitivo dell'utente.</p>
+                    <div class="mt-auto border-t-2 border-brutal-black pt-4 font-bold text-sm">
+                        Stack: <span class="text-gray-600">Data Science, ML, Biometria VR</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Percorso 3: Immersive Learning -->
-            <div class="bg-white p-8 brutal-border shadow-brutal role-card flex flex-col h-full">
-                <div class="bg-brutal-pink text-white w-fit px-3 py-1 font-bold border-2 border-brutal-black mb-6 uppercase text-sm">Corso // Formazione & HR</div>
-                <h3 class="text-3xl font-black uppercase mb-4">Immersive Learning Director</h3>
-                <p class="font-medium mb-6 flex-grow">Diventa il regista della formazione aziendale del futuro. Progetta simulazioni in Realtà Virtuale con avatar mossi da IA, dove si apprende comunicando con personaggi iper-realistici.</p>
-                <div class="mt-auto border-t-2 border-brutal-black pt-4 font-bold">
-                    Stack: <span class="text-gray-600">MetaHuman, LLM, Unity/Unreal</span>
+            <!-- Percorso 3 -->
+            <div class="course-card-wrap md:contents">
+                <div class="bg-white p-6 sm:p-8 brutal-border shadow-brutal role-card flex flex-col h-full">
+                    <div class="bg-brutal-pink text-white w-fit px-3 py-1 font-bold border-2 border-brutal-black mb-5 uppercase course-badge">Corso // Formazione & HR</div>
+                    <h3 class="text-2xl sm:text-3xl font-black uppercase mb-3">Immersive Learning Director</h3>
+                    <p class="font-medium mb-6 flex-grow text-sm sm:text-base">Diventa il regista della formazione aziendale del futuro. Progetta simulazioni in Realtà Virtuale con avatar mossi da IA, dove si apprende comunicando con personaggi iper-realistici.</p>
+                    <div class="mt-auto border-t-2 border-brutal-black pt-4 font-bold text-sm">
+                        Stack: <span class="text-gray-600">MetaHuman, LLM, Unity/Unreal</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Percorso 4: VR Architect -->
-            <div class="bg-white p-8 brutal-border shadow-brutal role-card flex flex-col h-full">
-                <div class="bg-brutal-neon text-brutal-black w-fit px-3 py-1 font-bold border-2 border-brutal-black mb-6 uppercase text-sm">Corso // Architettura & UX</div>
-                <h3 class="text-3xl font-black uppercase mb-4">VR Architect & Spatial UX</h3>
-                <p class="font-medium mb-6 flex-grow">Progetta l'estetica degli spazi. Mentre l'IA genera varianti, tu detterai la direzione artistica assicurandoti che gli ambienti virtuali rispettino l'ergonomia umana per evitare motion sickness.</p>
-                <div class="mt-auto border-t-2 border-brutal-black pt-4 font-bold">
-                    Stack: <span class="text-gray-600">Blender, Spatial UI, Psicologia XR</span>
+            <!-- Percorso 4 -->
+            <div class="course-card-wrap md:contents">
+                <div class="bg-white p-6 sm:p-8 brutal-border shadow-brutal role-card flex flex-col h-full">
+                    <div class="bg-brutal-neon text-brutal-black w-fit px-3 py-1 font-bold border-2 border-brutal-black mb-5 uppercase course-badge">Corso // Architettura & UX</div>
+                    <h3 class="text-2xl sm:text-3xl font-black uppercase mb-3">VR Architect & Spatial UX</h3>
+                    <p class="font-medium mb-6 flex-grow text-sm sm:text-base">Progetta l'estetica degli spazi. Mentre l'IA genera varianti, tu detterai la direzione artistica assicurandoti che gli ambienti virtuali rispettino l'ergonomia umana per evitare motion sickness.</p>
+                    <div class="mt-auto border-t-2 border-brutal-black pt-4 font-bold text-sm">
+                        Stack: <span class="text-gray-600">Blender, Spatial UI, Psicologia XR</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Percorso 5: Digital Twin -->
-            <div class="bg-white p-8 brutal-border shadow-brutal role-card flex flex-col h-full">
-                <div class="bg-gray-300 text-brutal-black w-fit px-3 py-1 font-bold border-2 border-brutal-black mb-6 uppercase text-sm">Corso // Industry 4.0</div>
-                <h3 class="text-3xl font-black uppercase mb-4">Digital Twin Integrator</h3>
-                <p class="font-medium mb-6 flex-grow">Replica le fabbriche fisiche nel Metaverso. Userai l'IA per analizzare i dati IoT dai sensori reali, creando cruscotti di manutenzione predittiva in Realtà Aumentata (AR) per i tecnici del futuro.</p>
-                <div class="mt-auto border-t-2 border-brutal-black pt-4 font-bold">
-                    Stack: <span class="text-gray-600">Hard Surface 3D, IoT API, AI Predittiva</span>
+            <!-- Percorso 5 -->
+            <div class="course-card-wrap md:contents">
+                <div class="bg-white p-6 sm:p-8 brutal-border shadow-brutal role-card flex flex-col h-full">
+                    <div class="bg-gray-300 text-brutal-black w-fit px-3 py-1 font-bold border-2 border-brutal-black mb-5 uppercase course-badge">Corso // Industry 4.0</div>
+                    <h3 class="text-2xl sm:text-3xl font-black uppercase mb-3">Digital Twin Integrator</h3>
+                    <p class="font-medium mb-6 flex-grow text-sm sm:text-base">Replica le fabbriche fisiche nel Metaverso. Userai l'IA per analizzare i dati IoT dai sensori reali, creando cruscotti di manutenzione predittiva in Realtà Aumentata (AR) per i tecnici del futuro.</p>
+                    <div class="mt-auto border-t-2 border-brutal-black pt-4 font-bold text-sm">
+                        Stack: <span class="text-gray-600">Hard Surface 3D, IoT API, AI Predittiva</span>
+                    </div>
                 </div>
             </div>
 
         </div>
+
+        <!-- Scroll hint (mobile only) -->
+        <p class="md:hidden mt-4 text-center font-bold text-sm uppercase opacity-50">← Scorri per altri percorsi →</p>
     </section>
 
     <!-- Wishlist / Form Section -->
-    <section id="join" class="py-24 px-6 bg-brutal-neon brutal-border border-x-0 border-b-0 relative overflow-hidden">
-        <div class="max-w-5xl mx-auto bg-white brutal-border p-8 md:p-16 shadow-brutal relative z-10">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                
+    <section id="join" class="py-16 md:py-24 px-4 sm:px-6 bg-brutal-neon brutal-border border-x-0 border-b-0 relative overflow-hidden">
+        <div class="max-w-5xl mx-auto bg-white brutal-border p-6 sm:p-10 md:p-16 shadow-brutal relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
+
                 <div>
-                    <h2 class="text-5xl font-black uppercase mb-6 leading-none">Accedi a <br>VR Academy.</h2>
-                    <p class="text-lg font-medium mb-8">
-                        I percorsi formativi ibridi (3D + AI) stanno per aprire le iscrizioni. Le classi avranno posti limitati per garantire altissima qualità strumentale. <br><br>
+                    <h2 class="text-4xl sm:text-5xl font-black uppercase mb-5 leading-none">Accedi a<br>VR Academy.</h2>
+                    <p class="text-base sm:text-lg font-medium mb-6">
+                        I percorsi formativi ibridi (3D + AI) stanno per aprire le iscrizioni. Le classi avranno posti limitati per garantire altissima qualità strumentale.<br><br>
                         Entra nella <strong>Wishlist Board</strong> per ricevere priorità sulle iscrizioni ai Master di VR Academy a Frosinone e accedere ai paper tecnologici.
                     </p>
-                    <div class="text-8xl font-black tracking-tighter opacity-10 mt-12 hidden md:block">
+                    <div class="text-6xl sm:text-8xl font-black tracking-tighter opacity-10 hidden md:block">
                         INIT<br>AI_
                     </div>
                 </div>
 
-                <!-- Brutalist Form -->
+                <!-- Form -->
                 <div>
-                    <form id="academyForm" class="flex flex-col gap-6">
+                    <form id="academyForm" class="flex flex-col gap-5" novalidate>
                         <div class="flex flex-col">
                             <label for="name" class="font-bold uppercase text-sm mb-2">Identificativo [Nome e Cognome] *</label>
-                            <input type="text" id="name" required class="p-4 brutal-border bg-brutal-bg font-bold focus:bg-white focus:outline-none focus:shadow-brutal transition-shadow" placeholder="Mario Rossi">
+                            <input type="text" id="name" required autocomplete="name"
+                                class="p-4 brutal-border bg-brutal-bg font-bold focus:bg-white focus:outline-none focus:shadow-brutal transition-shadow"
+                                placeholder="Mario Rossi">
+                            <span id="nameError" class="text-red-600 font-bold text-xs mt-1 hidden">Campo obbligatorio.</span>
                         </div>
-                        
+
                         <div class="flex flex-col">
                             <label for="email" class="font-bold uppercase text-sm mb-2">Terminale di contatto [Email] *</label>
-                            <input type="email" id="email" required class="p-4 brutal-border bg-brutal-bg font-bold focus:bg-white focus:outline-none focus:shadow-brutal transition-shadow" placeholder="mario@example.com">
+                            <input type="email" id="email" required autocomplete="email"
+                                class="p-4 brutal-border bg-brutal-bg font-bold focus:bg-white focus:outline-none focus:shadow-brutal transition-shadow"
+                                placeholder="mario@example.com">
+                            <span id="emailError" class="text-red-600 font-bold text-xs mt-1 hidden">Inserisci un'email valida.</span>
                         </div>
 
                         <div class="flex flex-col">
                             <label for="course" class="font-bold uppercase text-sm mb-2">Percorso VR Academy di interesse *</label>
-                            <select id="course" class="p-4 brutal-border bg-brutal-bg font-bold focus:bg-white focus:outline-none appearance-none cursor-pointer">
-                                <option value="ai-prompt">AI-XR Prompt Engineer</option>
-                                <option value="vr-architect">VR Architect & Spatial UX</option>
-                                <option value="digital-twin">Digital Twin Integrator</option>
-                                <option value="immersive-learning">Immersive Learning Director</option>
-                                <option value="spatial-data">Spatial AI Data Analyst</option>
-                                <option value="company-partnership">Sono un'Azienda (Voglio formare i dipendenti)</option>
-                            </select>
+                            <div class="relative">
+                                <select id="course"
+                                    class="w-full p-4 pr-10 brutal-border bg-brutal-bg font-bold focus:bg-white focus:outline-none appearance-none cursor-pointer">
+                                    <option value="ai-prompt">AI-XR Prompt Engineer</option>
+                                    <option value="vr-architect">VR Architect & Spatial UX</option>
+                                    <option value="digital-twin">Digital Twin Integrator</option>
+                                    <option value="immersive-learning">Immersive Learning Director</option>
+                                    <option value="spatial-data">Spatial AI Data Analyst</option>
+                                    <option value="company-partnership">Sono un'Azienda (Formare i dipendenti)</option>
+                                </select>
+                                <!-- Custom arrow -->
+                                <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 font-black text-lg">▼</span>
+                            </div>
                         </div>
 
-                        <button type="submit" class="w-full py-6 mt-4 bg-brutal-black text-white font-black text-2xl uppercase brutal-border hover:bg-brutal-orange hover:text-brutal-black hover:shadow-brutal transition-all cursor-pointer">
+                        <button type="submit"
+                            class="w-full py-5 mt-2 bg-brutal-black text-white font-black text-xl sm:text-2xl uppercase brutal-border hover:bg-brutal-orange hover:text-brutal-black active:bg-brutal-orange active:text-brutal-black transition-all cursor-pointer min-h-[60px]">
                             INITIATE SEQUENCE_
                         </button>
                     </form>
 
-                    <!-- Feedback Area -->
-                    <div id="formFeedback" class="hidden mt-6 p-6 brutal-border font-bold uppercase text-center bg-white"></div>
+                    <div id="formFeedback" class="hidden mt-5 p-5 brutal-border font-bold uppercase text-center bg-white text-base"></div>
                 </div>
 
             </div>
@@ -320,104 +460,135 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-brutal-black text-white py-12 px-6 border-t-4 border-brutal-orange text-center md:text-left">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+    <footer class="bg-brutal-black text-white py-10 px-4 sm:px-6 border-t-4 border-brutal-orange">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
             <div>
-                <div class="font-black text-3xl uppercase mb-2 text-brutal-neon">VR ACADEMY</div>
-                <p class="font-bold text-gray-400">AI x XR Training Hub // Frosinone</p>
+                <div class="font-black text-2xl sm:text-3xl uppercase mb-1 text-brutal-neon">VR ACADEMY</div>
+                <p class="font-bold text-gray-400 text-sm">AI x XR Training Hub // Frosinone</p>
             </div>
-            
-            <div class="flex gap-6 font-bold text-lg">
-                <a href="#" class="hover:text-brutal-orange transition-colors underline decoration-2 underline-offset-4">LINKEDIN</a>
-                <a href="#" class="hover:text-brutal-orange transition-colors underline decoration-2 underline-offset-4">DISCORD</a>
-                <a href="#" class="hover:text-brutal-orange transition-colors underline decoration-2 underline-offset-4">MANIFESTO PDF</a>
+
+            <div class="flex flex-wrap justify-center gap-4 font-bold text-base">
+                <a href="#" class="hover:text-brutal-orange transition-colors underline decoration-2 underline-offset-4 active:text-brutal-orange py-2 px-1">LINKEDIN</a>
+                <a href="#" class="hover:text-brutal-orange transition-colors underline decoration-2 underline-offset-4 active:text-brutal-orange py-2 px-1">DISCORD</a>
+                <a href="#" class="hover:text-brutal-orange transition-colors underline decoration-2 underline-offset-4 active:text-brutal-orange py-2 px-1">MANIFESTO PDF</a>
             </div>
         </div>
     </footer>
 
-    <!-- LOGICA FORM E SECURITY (MOCK API LIMIT) -->
     <script>
-        /* * =========================================================================
-         * ⚠️ SECURITY ALERT 
-         * =========================================================================
-         * Ciao Matteo. Ho implementato rigorosamente il limite di 20 iscrizioni
-         * massime al giorno e applicato la sanificazione anti-XSS sui campi di input
-         * per rispettare le tue direttive di sicurezza.
-         * * TUTTAVIA: Questa implementazione avviene tramite JavaScript sul browser 
-         * dell'utente (utilizzando il LocalStorage). Ciò significa che è puramente
-         * estetica e facilmente aggirabile svuotando i dati di navigazione o
-         * bloccando gli script.
-         * * AZIONE RICHIESTA PER LA PRODUZIONE:
-         * Per una protezione concreta contro spam, attacchi DDoS o injection sul 
-         * database, DEVI comunicare al reparto IT di implementare un "Rate Limiter"
-         * a livello SERVER (es. massimo 20 richieste POST per IP ogni 24h) e 
-         * ri-sanificare i dati nel backend (PHP, Node.js o Python) prima che tocchino 
-         * il database o il CRM. Non fare mai totale affidamento sulla sicurezza frontend.
-         * =========================================================================
-         */
+        /* =========================================================================
+         * MOBILE NAV
+         * ========================================================================= */
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const iconMenu   = document.getElementById('iconMenu');
+        const iconClose  = document.getElementById('iconClose');
 
-        const MAX_API_CALLS_PER_DAY = 20;
-        
-        // Sanificazione XSS basica (Frontend)
-        function sanitizeInput(str) {
-            return str.replace(/[^\w. @-]/gi, function (c) {
-                return '&#' + c.charCodeAt(0) + ';';
-            });
+        menuToggle.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.toggle('open');
+            menuToggle.setAttribute('aria-expanded', isOpen);
+            iconMenu.classList.toggle('hidden', isOpen);
+            iconClose.classList.toggle('hidden', !isOpen);
+        });
+
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('open');
+            menuToggle.setAttribute('aria-expanded', false);
+            iconMenu.classList.remove('hidden');
+            iconClose.classList.add('hidden');
         }
 
-        document.getElementById('academyForm').addEventListener('submit', function(e) {
+        // Close on outside tap
+        document.addEventListener('click', (e) => {
+            if (!menuToggle.contains(e.target) && !mobileMenu.contains(e.target)) {
+                closeMobileMenu();
+            }
+        });
+
+        /* =========================================================================
+         * FORM LOGIC
+         * =========================================================================
+         * ⚠️ SECURITY ALERT (Matteo)
+         * Il rate limit implementato qui è sul client (localStorage) → puramente estetico.
+         * Per la produzione: implementa un rate limiter server-side (max 20 POST/IP/24h)
+         * e sanifica i dati nel backend prima che tocchino il database.
+         * ========================================================================= */
+        const MAX_API_CALLS_PER_DAY = 20;
+
+        function sanitizeInput(str) {
+            return str.replace(/[^\w. @-]/gi, c => '&#' + c.charCodeAt(0) + ';');
+        }
+
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        document.getElementById('academyForm').addEventListener('submit', function (e) {
             e.preventDefault();
-            
+
             const feedbackEl = document.getElementById('formFeedback');
-            const btn = this.querySelector('button[type="submit"]');
-            
+            const btn        = this.querySelector('button[type="submit"]');
+            const nameInput  = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const nameError  = document.getElementById('nameError');
+            const emailError = document.getElementById('emailError');
+
+            // Client-side validation
+            let valid = true;
+            nameError.classList.add('hidden');
+            emailError.classList.add('hidden');
+
+            if (!nameInput.value.trim()) {
+                nameError.classList.remove('hidden');
+                nameInput.focus();
+                valid = false;
+            }
+            if (!validateEmail(emailInput.value.trim())) {
+                emailError.classList.remove('hidden');
+                if (valid) emailInput.focus();
+                valid = false;
+            }
+            if (!valid) return;
+
+            // Rate limit check
             const today = new Date().toISOString().split('T')[0];
             let apiUsage = JSON.parse(localStorage.getItem('apiUsageVRAcademy')) || { date: today, count: 0 };
-            
-            if (apiUsage.date !== today) { 
-                apiUsage = { date: today, count: 0 }; 
-            }
+            if (apiUsage.date !== today) apiUsage = { date: today, count: 0 };
 
-            // CONTROLLO LIMITE API (Sicurezza Locale per demo)
             if (apiUsage.count >= MAX_API_CALLS_PER_DAY) {
-                console.warn("[SECURITY/QUOTA ALERT] Limite chiamate API giornaliere (20) raggiunto.");
-                feedbackEl.innerHTML = `! OVERLOAD !<br>Quota di accessi giornalieri esaurita (20/20). Il sistema si resetta a mezzanotte.`;
-                feedbackEl.className = "mt-6 p-6 brutal-border font-bold uppercase text-center bg-red-600 text-white shadow-brutal block";
+                console.warn('[SECURITY/QUOTA ALERT] Limite 20/giorno raggiunto.');
+                feedbackEl.innerHTML = `! OVERLOAD !<br>Quota giornaliera esaurita (20/20).<br>Reset a mezzanotte.`;
+                feedbackEl.className = 'mt-5 p-5 brutal-border font-bold uppercase text-center bg-red-600 text-white shadow-brutal block';
                 return;
             }
 
-            // Validazione input
-            const name = sanitizeInput(document.getElementById('name').value);
-            const email = sanitizeInput(document.getElementById('email').value);
-            const course = sanitizeInput(document.getElementById('course').value);
-
-            // UI Stato caricamento
-            const originalBtnText = btn.innerHTML;
-            btn.innerHTML = `ANALYZING DATA...`;
-            btn.classList.add('bg-gray-500');
-            btn.classList.remove('hover:bg-brutal-orange');
+            // Loading state
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'ANALYZING DATA...';
+            btn.classList.add('opacity-70');
             btn.disabled = true;
 
-            // Simulazione invio API al Backend
+            const name   = sanitizeInput(nameInput.value.trim());
+            const email  = sanitizeInput(emailInput.value.trim());
+            const course = sanitizeInput(document.getElementById('course').value);
+
             setTimeout(() => {
-                // Aggiorna contatore locale
                 apiUsage.count++;
                 localStorage.setItem('apiUsageVRAcademy', JSON.stringify(apiUsage));
-                console.log(`[VR ACADEMY - API MOCK] Contatto acquisito: ${name} per corso ${course}. Rate Limit: ${apiUsage.count}/${MAX_API_CALLS_PER_DAY}`);
+                console.log(`[VR ACADEMY] Contatto: ${name} → ${course}. Rate: ${apiUsage.count}/${MAX_API_CALLS_PER_DAY}`);
 
-                // Successo UI
                 this.reset();
-                btn.innerHTML = originalBtnText;
-                btn.classList.remove('bg-gray-500');
-                btn.classList.add('hover:bg-brutal-orange');
+                btn.innerHTML = originalText;
+                btn.classList.remove('opacity-70');
                 btn.disabled = false;
-                
+
                 feedbackEl.innerHTML = `ACCESSO AUTORIZZATO.<br>Sei in lista per la VR Academy.`;
-                feedbackEl.className = "mt-6 p-6 brutal-border font-bold uppercase text-center bg-brutal-neon text-brutal-black shadow-brutal block";
-                
-                setTimeout(() => { 
-                    feedbackEl.classList.add('hidden'); 
-                }, 6000);
+                feedbackEl.className = 'mt-5 p-5 brutal-border font-bold uppercase text-center bg-brutal-neon text-brutal-black shadow-brutal block';
+
+                // Scroll feedback into view on mobile
+                feedbackEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+                setTimeout(() => feedbackEl.classList.add('hidden'), 6000);
             }, 1200);
         });
     </script>
