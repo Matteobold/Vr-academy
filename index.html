@@ -138,12 +138,18 @@
 
         /* ── HERO TYPE ── */
         .hero-title {
-            font-size: clamp(2.4rem, 10.5vw, 9rem);
-            line-height: 0.9;
+            font-size: clamp(1.9rem, 7vw, 9rem);
+            line-height: 0.92;
             overflow-wrap: break-word;
             word-break: break-word;
             hyphens: auto;
             max-width: 100%;
+        }
+        @media (max-width: 480px) {
+            .hero-title { font-size: clamp(1.75rem, 6.8vw, 2.7rem); }
+        }
+        @media (min-width: 481px) and (max-width: 767px) {
+            .hero-title { font-size: clamp(2.4rem, 7vw, 3.8rem); }
         }
 
         /* ── TOUCH-FRIENDLY INPUTS ── */
@@ -213,7 +219,7 @@
     <nav class="py-4 px-4 md:px-6 brutal-border border-t-0 bg-brutal-bg sticky top-0 z-50">
         <div class="flex justify-between items-center">
             <!-- Logo -->
-            <div class="font-black text-xl sm:text-2xl md:text-3xl tracking-tighter uppercase glitch-hover px-2 flex items-center gap-2 cursor-default select-none">
+            <div class="font-black text-2xl sm:text-2xl md:text-3xl tracking-tighter uppercase glitch-hover px-2 flex items-center gap-2 cursor-default select-none whitespace-nowrap">
                 VR ACADEMY
                 <span class="text-xs bg-brutal-black text-brutal-neon px-2 py-1 hidden sm:inline-block">AI x XR</span>
             </div>
@@ -226,8 +232,9 @@
             </div>
 
             <div class="flex items-center gap-3">
-                <a href="#join" class="bg-brutal-black text-white px-4 py-2 md:px-6 font-bold uppercase brutal-border hover:bg-brutal-orange hover:text-brutal-black transition-colors text-sm md:text-base">
-                    ENTRA
+                <a href="#join" class="bg-brutal-black text-white px-3 py-2 md:px-6 font-bold uppercase brutal-border hover:bg-brutal-orange hover:text-brutal-black active:bg-brutal-orange active:text-brutal-black transition-colors text-sm md:text-base whitespace-nowrap">
+                    <span class="md:hidden">ENTRA</span>
+                    <span class="hidden md:inline">ENTRA NELL'HUB</span>
                 </a>
                 <!-- Hamburger — mobile only -->
                 <button id="menuToggle" class="md:hidden brutal-border p-2 bg-brutal-bg active:bg-brutal-black active:text-white transition-colors" aria-label="Apri menu" aria-expanded="false" aria-controls="mobileMenu">
